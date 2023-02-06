@@ -1,3 +1,6 @@
 # ignore following files
 
 venv/
+working/
+input/
+*/__pycache__
