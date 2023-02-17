@@ -32,6 +32,8 @@ def check_paths(root_directory):
         print("Directory Created At {}".format(frame_directory))
     else:
         print("Directory Already Exist")
+        
+    return root_directory,working_directory,json_directory,face_directory,frame_directory
 
 
 def create_dir(directory):

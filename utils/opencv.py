@@ -7,10 +7,10 @@ import asyncio
 root_directory = "/home/ghost/uni/fair/project/"
 working_directory = "/home/ghost/uni/fair/project/working/frames/"
 json_directory = "/home/ghost/uni/fair/project/working/json/"
-face_directory = "/home/ghost/uni/fair/project/working/frames/"
+face_directory = "/home/ghost/uni/fair/project/working/faces/"
 
 
-def extract_frames(video):
+def extract_frames(video,working_directory):
     input_video = cv2.VideoCapture(video)
 
     total_frames = int(input_video.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -28,9 +28,9 @@ def extract_frames(video):
         time_stamp = ((input_video.get(cv2.CAP_PROP_POS_MSEC)/1000))
         index_data[current_frame] = time_stamp
         print(time_stamp)
-        cv2.imwrite('{}frame_{}.jpeg'.format(working_directory, current_frame),
+        cv2.imwrite('{}/frames/frame_{}.jpeg'.format(working_directory, current_frame),
                     frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
-        print('{}frame_{}.jpeg'.format(working_directory, current_frame))
+        print('{}frames/frame_{}.jpeg'.format(working_directory, current_frame))
 
         current_frame += 1
     input_video.release()
@@ -62,11 +62,13 @@ async def process_file(filepath, cropped_faces):
         cropped_faces.append(str(face))
         # Save the cropped face to a file
         savepath = os.path.join(
-            '/home/ghost/uni/fair/project/working/faces/', f'face_{len(cropped_faces)}.jpeg')
+            '{}'.format(face_directory), f'face_{len(cropped_faces)}.jpeg')
+        print(savepath)
         await loop.run_in_executor(None, cv2.imwrite, savepath, face)
 
 
 async def process_directory(directory):
+    print(directory)
     tasks = []
     cropped_faces = []
     for filename in os.listdir(directory):
