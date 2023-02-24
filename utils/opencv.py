@@ -10,7 +10,7 @@ json_directory = "/home/ghost/uni/fair/project/working/json/"
 face_directory = "/home/ghost/uni/fair/project/working/faces/"
 
 
-def extract_frames(video,working_directory):
+def extract_frames(video, working_directory):
     input_video = cv2.VideoCapture(video)
 
     total_frames = int(input_video.get(cv2.CAP_PROP_FRAME_COUNT))
