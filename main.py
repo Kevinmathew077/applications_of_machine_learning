@@ -26,7 +26,7 @@ async def main():
     cv.extract_frames("input/vd.mp4", working_directory)
 
     # Process the directory asynchronously
-    # await cv.process_directory(frame_directory)
+    await cv.process_directory(frame_directory)
 
     end = time.time()
 

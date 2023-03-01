@@ -38,6 +38,8 @@ def extract_frames(video, working_directory):
         json.dump(index_data, json_file)
 
 # Check??
+
+
 def crop_face(image):
     face_cascade = cv2.CascadeClassifier(
         '/home/ghost/uni/fair/project/utils/prebuilt/haarcascade_frontalface_default.xml')
@@ -46,8 +48,16 @@ def crop_face(image):
         gray, scaleFactor=1.1, minNeighbors=10)
     if len(faces) == 0:
         return None
-    (x, y, w, h) = faces[0]
-    return image[y:2*(y+h), x:2*(x+w)]
+    elif len(faces) > 1:
+        print(f"{len(faces)} faces detected")
+        cropped_faces = []
+        for (x, y, w, h) in faces:
+            cropped_faces.append(image[y:y+h, x:x+w])
+        return cropped_faces
+    else:
+        (x, y, w, h) = faces[0]
+        return image[y:y+h, x:x+w]
+
 
 # Asynchronous function to process a single file
 
@@ -56,15 +66,30 @@ async def process_file(filepath, cropped_faces):
     # print(filepath)
     loop = asyncio.get_running_loop()
     image = await loop.run_in_executor(None, cv2.imread, filepath)
+    print(filepath)
+    frame_name = os.path.splitext(os.path.basename(filepath))[0]
     face = await loop.run_in_executor(None, crop_face, image)
-    if face is not None and str(face) not in cropped_faces:
-        # Add the cropped face to the list
-        cropped_faces.append(str(face))
-        # Save the cropped face to a file
-        savepath = os.path.join(
-            '{}'.format(face_directory), f'face_{len(cropped_faces)}.jpeg')
-        print(savepath)
-        await loop.run_in_executor(None, cv2.imwrite, savepath, face)
+    print(face)
+    if face is not None:
+        if isinstance(face, list):
+            for i, f in enumerate(face):
+                if str(f) not in cropped_faces:
+                    # Add the cropped face to the list
+                    cropped_faces.append(str(f))
+                    # Save the cropped face to a file
+                    savepath = os.path.join(
+                        '{}'.format(face_directory), f'{frame_name}_face_{i+1}.jpeg')
+                    print(savepath)
+                    await loop.run_in_executor(None, cv2.imwrite, savepath, f)
+        else:
+            if str(face) not in cropped_faces:
+                # Add the cropped face to the list
+                cropped_faces.append(str(face))
+                # Save the cropped face to a file
+                savepath = os.path.join(
+                    '{}'.format(face_directory), f'{frame_name}_face_1.jpeg')
+                print(savepath)
+                await loop.run_in_executor(None, cv2.imwrite, savepath, face)
 
 
 async def process_directory(directory):
