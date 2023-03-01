@@ -37,7 +37,7 @@ def extract_frames(video, working_directory):
     with open("{}index.json".format(json_directory), "w") as json_file:
         json.dump(index_data, json_file)
 
-
+# Check??
 def crop_face(image):
     face_cascade = cv2.CascadeClassifier(
         '/home/ghost/uni/fair/project/utils/prebuilt/haarcascade_frontalface_default.xml')
@@ -47,7 +47,7 @@ def crop_face(image):
     if len(faces) == 0:
         return None
     (x, y, w, h) = faces[0]
-    return image[y:y+h, x:x+w]
+    return image[y:2*(y+h), x:2*(x+w)]
 
 # Asynchronous function to process a single file
 
