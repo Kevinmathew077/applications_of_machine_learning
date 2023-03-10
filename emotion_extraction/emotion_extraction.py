@@ -3,8 +3,15 @@ import os
 import numpy as np
 from tensorflow.keras.models import load_model
 import time
+import json
+
+
+
+json_directory = "/home/ghost/uni/fair/project/working/json/"
 
 start = time.time()
+
+emotion_data = {}
 
 # Path to directory containing images
 directory_path = '/home/ghost/uni/fair/project/working/faces'
@@ -38,16 +45,20 @@ for filename in os.listdir(directory_path):
 
     # Get emotion label with highest probability
     label = emotions[np.argmax(prediction)]
+    emotion_data[filename.replace(".jpeg", "")] = label
 
     # Display image with predicted emotion label (optional)
-    cv2.putText(image, label, (10, 30),
-                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-    cv2.imshow('Image', image)
-    cv2.waitKey(0)
+    # cv2.putText(image, label, (10, 30),
+    #             cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+    # cv2.imshow('Image', image)
+    # cv2.waitKey(0)
 
 end = time.time()
 
 # Clean up
 cv2.destroyAllWindows()
+
+with open("{}emotions.json".format(json_directory), "w") as json_file:
+    json.dump(emotion_data, json_file)
 
 print((end-start)/60)
