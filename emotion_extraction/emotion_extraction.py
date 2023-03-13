@@ -21,7 +21,8 @@ def emotion_extraction():
     model = load_model('/home/ghost/uni/fair/project/utils/prebuilt/model.h5')
 
     # Define emotion labels
-    emotions = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
+    emotions = ['Angry', 'Disgust', 'Fear',
+                'Happy', 'Sad', 'Surprise', 'Neutral']
 
     # Loop through each image in the directory
     for filename in os.listdir(directory_path):
@@ -60,6 +61,6 @@ def emotion_extraction():
     cv2.destroyAllWindows()
 
     with open("{}emotions.json".format(json_directory), "w") as json_file:
-        json.dump(emotion_data, json_file,indent=4)
+        json.dump(emotion_data, json_file, indent=4)
 
     print((end-start)/60)
