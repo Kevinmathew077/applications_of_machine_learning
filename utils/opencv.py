@@ -35,7 +35,7 @@ def extract_frames(video, working_directory):
         current_frame += 1
     input_video.release()
     with open("{}index.json".format(json_directory), "w") as json_file:
-        json.dump(index_data, json_file)
+        json.dump(index_data, json_file,indent=4)
 
 # Check??
 

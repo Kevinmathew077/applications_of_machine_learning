@@ -1,5 +1,6 @@
 import utils.opencv as cv
 import utils.fileio as fileio
+import emotion_extraction.emotion_extraction as ee
 import asyncio
 import time
 import os
@@ -27,6 +28,8 @@ async def main():
 
     # Process the directory asynchronously
     await cv.process_directory(frame_directory)
+    
+    ee.emotion_extraction()
 
     end = time.time()
 
