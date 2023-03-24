@@ -26,7 +26,7 @@ def extract_frames(video, working_directory):
             break
         print(current_frame)
         time_stamp = ((input_video.get(cv2.CAP_PROP_POS_MSEC)/1000))
-        index_data[current_frame] = time_stamp
+        index_data["frame_{}".format(current_frame)] = {"time_stamp":time_stamp,"emotions":{}}
         print(time_stamp)
         cv2.imwrite('{}/frames/frame_{}.jpeg'.format(working_directory, current_frame),
                     frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
@@ -78,7 +78,7 @@ async def process_file(filepath, cropped_faces):
                     cropped_faces.append(str(f))
                     # Save the cropped face to a file
                     savepath = os.path.join(
-                        '{}'.format(face_directory), f'{frame_name}_face_{i+1}.jpeg')
+                        '{}'.format(face_directory), f'{frame_name}-face_{i+1}.jpeg')
                     print(savepath)
                     await loop.run_in_executor(None, cv2.imwrite, savepath, f)
         else:
@@ -87,7 +87,7 @@ async def process_file(filepath, cropped_faces):
                 cropped_faces.append(str(face))
                 # Save the cropped face to a file
                 savepath = os.path.join(
-                    '{}'.format(face_directory), f'{frame_name}_face_1.jpeg')
+                    '{}'.format(face_directory), f'{frame_name}-face_1.jpeg')
                 print(savepath)
                 await loop.run_in_executor(None, cv2.imwrite, savepath, face)
 

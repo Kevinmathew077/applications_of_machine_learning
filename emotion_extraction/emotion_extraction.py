@@ -6,7 +6,14 @@ import time
 import json
 
 
+# Load the contents of "sample.json" into a Python dictionary
+
+
 def emotion_extraction():
+    
+    with open("/home/ghost/uni/fair/project/working/json/index.json", "r") as f:
+        data = json.load(f)
+
 
     json_directory = "/home/ghost/uni/fair/project/working/json/"
 
@@ -47,7 +54,24 @@ def emotion_extraction():
 
         # Get emotion label with highest probability
         label = emotions[np.argmax(prediction)]
+        
+        # frame,face,extra = filename.split("_")
+        # frame,face = filename.split('_')[0], filename.split('_')[2]
+        
+        # print("frame : ",frame,"face :",face)
+                
         emotion_data[filename.replace(".jpeg", "")] = label
+        # print(filename)
+        
+        x, y = filename.split("-")[0], filename.split("-")[1].split(".")[0]
+        print(x,y)
+        data[x]["emotions"][y] = label
+        
+        print(emotion_data)
+        emotion_data={}
+        
+        with open("/home/ghost/uni/fair/project/working/json/index.json", "w") as f:
+            json.dump(data, f,indent=4)
 
         # Display image with predicted emotion label (optional)
         # cv2.putText(image, label, (10, 30),
@@ -59,6 +83,8 @@ def emotion_extraction():
 
     # Clean up
     cv2.destroyAllWindows()
+    
+    print(emotion_data)
 
     with open("{}emotions.json".format(json_directory), "w") as json_file:
         json.dump(emotion_data, json_file, indent=4)
