@@ -42,7 +42,8 @@ model.add(Dropout(0.5))
 model.add(Dense(num_classes, activation='softmax'))
 
 # Compile model
-model.compile(optimizer=Adam(lr=0.0001),
+# was lr = 0.0001
+model.compile(optimizer=Adam(lr=0.01),
               loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Train model
