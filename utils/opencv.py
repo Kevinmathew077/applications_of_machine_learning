@@ -4,10 +4,13 @@ import os
 import json
 import asyncio
 
-root_directory = "/home/ghost/uni/fair/project/"
-working_directory = "/home/ghost/uni/fair/project/working/frames/"
-json_directory = "/home/ghost/uni/fair/project/working/json/"
-face_directory = "/home/ghost/uni/fair/project/working/faces/"
+    
+root_directory = os.getcwd()
+
+working_directory = f"{root_directory}/working/frames/"
+json_directory = f"{root_directory}/working/json/"
+face_directory = f"{root_directory}/working/faces/"
+
 
 
 def extract_frames(video, working_directory):
@@ -42,7 +45,7 @@ def extract_frames(video, working_directory):
 
 def crop_face(image):
     face_cascade = cv2.CascadeClassifier(
-        '/home/ghost/uni/fair/project/utils/prebuilt/haarcascade_frontalface_default.xml')
+        f'{root_directory}/utils/prebuilt/haarcascade_frontalface_default.xml')
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(
         gray, scaleFactor=1.1, minNeighbors=10)

@@ -5,9 +5,15 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 from sklearn.model_selection import train_test_split
 
+root_directory = os.getcwd()
+
+working_directory = f"{root_directory}/working/frames/"
+json_directory = f"{root_directory}/working/json/"
+face_directory = f"{root_directory}/working/faces/"
+
 # Load FER2013 dataset
 data = pd.read_csv(
-    '/home/ghost/uni/fair/project/models/challenges-in-representation-learning-facial-expression-recognition-challenge/fer2013/fer2013.csv')
+    f'{root_directory}/utils/prebuilts/model.h5')
 
 # Split data into training and validation sets
 train_data = data[data['Usage'] == 'Training']
@@ -51,4 +57,4 @@ model.fit(X_train, y_train, batch_size=32,
           epochs=50, validation_data=(X_val, y_val))
 
 # Save model
-model.save('/home/ghost/uni/fair/project/models/challenges-in-representation-learning-facial-expression-recognition-challenge/fer2013/model.h5')
+model.save(f'{root_directory}/utils/prebuilt/FERmodel.h5')

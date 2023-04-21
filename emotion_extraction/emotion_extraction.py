@@ -9,23 +9,28 @@ import json
 # Load the contents of "sample.json" into a Python dictionary
 
 
+root_directory = os.getcwd()
+
+working_directory = f"{root_directory}/working/frames/"
+json_directory = f"{root_directory}/working/json/"
+face_directory = f"{root_directory}/working/faces/"
+
+
 def emotion_extraction():
     
-    with open("/home/ghost/uni/fair/project/working/json/index.json", "r") as f:
+    with open(f"{json_directory}/index.json", "r") as f:
         data = json.load(f)
 
-
-    json_directory = "/home/ghost/uni/fair/project/working/json/"
 
     start = time.time()
 
     emotion_data = {}
 
     # Path to directory containing images
-    directory_path = '/home/ghost/uni/fair/project/working/faces'
+    directory_path = f'{face_directory}'
 
     # Load facial expression recognition model
-    model = load_model('/home/ghost/uni/fair/project/utils/prebuilt/model.h5')
+    model = load_model(f'{root_directory}/utils/prebuilt/model.h5')
 
     # Define emotion labels
     emotions = ['Angry', 'Disgust', 'Fear',
@@ -70,7 +75,7 @@ def emotion_extraction():
         print(emotion_data)
         emotion_data={}
         
-        with open("/home/ghost/uni/fair/project/working/json/index.json", "w") as f:
+        with open(f"{json_directory}/index.json", "w") as f:
             json.dump(data, f,indent=4)
 
         # Display image with predicted emotion label (optional)
